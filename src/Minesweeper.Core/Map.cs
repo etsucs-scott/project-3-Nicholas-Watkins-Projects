@@ -6,12 +6,7 @@ public class Map
     private int _mapBombs;
     public List<string> _map { get; private set; } = new List<string>(); 
 
-    public Map(int mapType)
-    {
-        ChangeSize(mapType);
-    }
-
-    public int ChangeSize(int mapType) // Returns 1 if 1,2,3 not chosen
+    public int SetSize(int mapType) // Returns 1 if 1,2,3 not chosen
     {
         switch (mapType)
         {

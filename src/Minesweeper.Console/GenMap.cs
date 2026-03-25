@@ -1,8 +1,9 @@
-namespace Minesweeper.Core;
-
-public static class GenMap
+/// <summary>
+/// 
+/// </summary>
+internal static class GenMap
 {
-    public static void Generate(List<string> map)
+    public static void Display(List<string> map)
     {
         foreach (string s in map)
         {
@@ -26,5 +27,6 @@ public static class GenMap
 
             Console.ResetColor();
         }
+        Console.WriteLine();
     }
 }
