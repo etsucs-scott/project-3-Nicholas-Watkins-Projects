@@ -31,7 +31,7 @@ internal static class GenMap
             else
             {
                 Console.ResetColor();
-                //Console.Write(" # ");
+                Console.Write(" # ");
                 Console.Write(s);
             }
 
