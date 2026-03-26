@@ -5,7 +5,8 @@ public class Map
 {
     private int _mapSize;
     private int _mapBombs;
-    public List<string> map { get; private set; } = new List<string>(); 
+    public List<string> map { get; private set; } = new List<string>();
+    public List<string> mapMask { get; private set;} = new List<string>();
 
     public int SetSize(int mapType) // Returns 1 if 1,2,3 not chosen
     {
@@ -51,15 +52,18 @@ public class Map
                 if (bombCoords.Contains((x, y)))
                 {
                     map.Add(" b ");
+                    mapMask.Add(" # ");
                     bombCoords.Remove((x, y));
                 }
                 else
                 {
                     map.Add(" . ");
+                    mapMask.Add(" # ");
                 }
                 if (x == _mapSize - 1)
                 {
                     map.Add("\n");
+                    mapMask.Add("\n");
                 }
             }
         }
@@ -126,7 +130,7 @@ public class Map
                             List<(int, int)> aCoords = checks[val][amount[0]];
 
                             amount[0] += 1;
-                            aCoords.Add((x, y));
+                            aCoords.Add((x + coords.Item1, y + coords.Item2));
 
                             Dictionary<int, List<(int,int)>> newAmountAndCoords = new Dictionary<int, List<(int, int)>>();
                             newAmountAndCoords[amount[0]] = aCoords;
@@ -138,6 +142,37 @@ public class Map
             }
         }
         return checks;
+    }
+
+    public void Reveal((int, int) coord)
+    {
+        int listPosition = (_mapSize + 1) * coord.Item2 + coord.Item1;
+        mapMask[listPosition] = map[listPosition];
+        
+        Dictionary<string, Dictionary<int, List<(int, int)>>> emptyCheck = new Dictionary<string, Dictionary<int, List<(int, int)>>>();
+        Dictionary<int, List<(int, int)>> amountAndCoords = new Dictionary<int, List<(int, int)>>();
+
+        amountAndCoords[0] = new List<(int, int)>();
+        emptyCheck[" . "] = amountAndCoords;
+
+        emptyCheck = CheckCoord(this.map, coord, this._mapSize, emptyCheck);
+        amountAndCoords = emptyCheck[" . "];
+        int amountOfDots = amountAndCoords.Keys.ToList()[0];
+        List<(int, int)> dotCoords = amountAndCoords[amountOfDots];
+
+        if (amountOfDots != 0)
+        {
+            foreach (var dotCoord in dotCoords)
+            {
+                Reveal(dotCoord);
+            }
+        }
+    }
+
+    public void Replace((int, int) coord, string symbol)
+    {
+        int listPosition = (_mapSize + 1) * coord.Item2 + coord.Item1;
+        mapMask[listPosition] = symbol;
     }
 
 }

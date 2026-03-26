@@ -1,13 +1,24 @@
 using System.Drawing;
+using Minesweeper.Core;
 
 namespace Minesweeper.Console;
 
 public static class Menu
 {
-    public static void Display()
+    public static void Display(Map map)
     {
         System.Console.Write("> ");
         string? response = System.Console.ReadLine();
+
+        string[] responsePieces = response.Split(" ");
+        if (responsePieces[0] == "r")
+        {
+            int x;
+            int y;
+            int.TryParse(responsePieces[1], out x);
+            int.TryParse(responsePieces[2], out y);
+            map.Reveal((x, y));
+        }
     }
     public static int GetSeed()
     {

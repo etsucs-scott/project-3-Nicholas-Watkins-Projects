@@ -20,6 +20,7 @@ public static class Program
         string currentTime = $"{stopwatch.Elapsed.TotalSeconds}";
         Menu.HomeScreen(seed, currentTime);
 
+
         Map map = new Map();
         map.SetSize(size);
         map.GenMap(seed);
@@ -29,7 +30,7 @@ public static class Program
             currentTime = $"{Math.Round(stopwatch.Elapsed.TotalSeconds, 2)} second(s)";
             Menu.HomeScreen(seed, currentTime);
             GenMap.Display(map.map);
-            Menu.Display(); 
+            Menu.Display(map); 
         }
     }
 }
