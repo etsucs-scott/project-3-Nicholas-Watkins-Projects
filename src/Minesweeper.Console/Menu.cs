@@ -1,13 +1,39 @@
 using System.Drawing;
-
+using System.Security.Cryptography.X509Certificates;
 namespace Minesweeper.Console;
 
 public static class Menu
 {
-    public static void Display()
+    public static (int, int, int) Display() // Needs improvement, will break by player
     {
         System.Console.Write("> ");
         string? response = System.Console.ReadLine();
+        string[] responseSplit = response.Split(' ');
+
+        if (responseSplit[0] == "r")
+        {
+            int x;
+            int y;
+            int.TryParse(responseSplit[1], out x);
+            int.TryParse(responseSplit[2], out y);
+            return (x, y, 0);
+        }
+
+        if (responseSplit[0] == "f")
+        {
+            int x;
+            int y;
+            int.TryParse(responseSplit[1], out x);
+            int.TryParse(responseSplit[2], out y);
+            return (x, y, 1);
+        }
+
+        if (responseSplit[0] == "q")
+        {
+            return (-2, -2, -2);
+        }
+
+        return (-1, -1, -1);
     }
     public static int GetSeed()
     {

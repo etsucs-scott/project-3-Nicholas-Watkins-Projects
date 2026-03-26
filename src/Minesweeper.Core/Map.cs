@@ -4,7 +4,8 @@ public class Map
 {
     private int _mapSize;
     private int _mapBombs;
-    public List<string> _map { get; private set; } = new List<string>(); 
+    public List<(bool,string)> _map { get; private set; } = new List<(bool, string)>(); 
+    public List<(int, int)> bombCoords { get; private set; } = new List<(int, int)>();
 
     public int SetSize(int mapType) // Returns 1 if 1,2,3 not chosen
     {
@@ -31,7 +32,6 @@ public class Map
     public void GenMap(int seed)
     {
         Random coordGen = new Random(seed);
-        List<(int, int)> bombCoords = new List<(int, int)>();
 
         // Bomb generation for map (coords)
         for (int i = 0; i < _mapBombs; i++)
@@ -49,16 +49,15 @@ public class Map
             {
                 if (bombCoords.Contains((x, y)))
                 {
-                    _map.Add(" b ");
-                    bombCoords.Remove((x, y));
+                    _map.Add((false, " b "));
                 }
                 else
                 {
-                    _map.Add(" . ");
+                    _map.Add((false, " . "));
                 }
                 if (x == _mapSize - 1)
                 {
-                    _map.Add("\n");
+                    _map.Add((true, "\n"));
                 }
             }
         }
@@ -69,16 +68,16 @@ public class Map
             for (int x = 0; x < _mapSize; x++)
             {
                 int posSym = CheckCoord(_map, (x, y), _mapSize);
-                if (_map[(_mapSize + 1) * y + x] != " b ")
+                if (_map[(_mapSize + 1) * y + x].Item2 != " b ")
                 {
                     if (posSym != 0)
-                        _map[(_mapSize + 1) * y + x] = $" {posSym} ";
+                        _map[(_mapSize + 1) * y + x] = (false, $" {posSym} ");
                 }
             }
         }
     }
 
-    public int CheckCoord(List<string> map, (int, int) coords, int mapSize)
+    public int CheckCoord(List<(bool, string)> map, (int, int) coords, int mapSize)
     {
         int bombAmount = 0;
         int skipX = 2;
@@ -110,7 +109,7 @@ public class Map
 
                 if (checkCoord)
                 {
-                    if (map[(mapSize + 1) * (coords.Item2 + y) + (coords.Item1 + x)] == " b ")
+                    if (map[(mapSize + 1) * (coords.Item2 + y) + (coords.Item1 + x)].Item2 == " b ")
                         bombAmount += 1;
                 }
             }
@@ -118,4 +117,18 @@ public class Map
         return bombAmount;
     }
 
+    public bool reveal((int, int) coords)
+    {
+        int indexLocation = (_mapSize + 1) * coords.Item2 + coords.Item1;
+        _map[indexLocation] = (true, _map[indexLocation].Item2);
+        if (_map[indexLocation].Item2 == " b ")
+        {
+            return true;
+        }
+        else if (_map[indexLocation].Item2 == " . ")
+        {
+            
+        }
+        return false;
+    }
 }

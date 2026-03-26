@@ -24,12 +24,28 @@ public static class Program
         map.SetSize(size);
         map.GenMap(seed);
 
+        bool loss = false;
+
         while (true)
         {
             currentTime = $"{Math.Round(stopwatch.Elapsed.TotalSeconds, 2)} second(s)";
             Menu.HomeScreen(seed, currentTime);
             GenMap.Display(map._map);
-            Menu.Display(); 
+            (int, int, int) menOut = Menu.Display();
+            
+            if (menOut.Item3 == 0)
+            {
+                loss = map.reveal((menOut.Item1, menOut.Item2));
+                if (loss)
+                {
+                    System.Console.WriteLine("You lost the game");
+                }
+            }
+            if (menOut.Item3 == -2 || loss)
+            {
+                break;
+            }
+
         }
     }
 }
