@@ -28,7 +28,7 @@ public static class Program
         {
             currentTime = $"{Math.Round(stopwatch.Elapsed.TotalSeconds, 2)} second(s)";
             Menu.HomeScreen(seed, currentTime);
-            GenMap.Display(map._map);
+            GenMap.Display(map.map);
             Menu.Display(); 
         }
     }

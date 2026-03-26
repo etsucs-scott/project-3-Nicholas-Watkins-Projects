@@ -1,10 +1,11 @@
-﻿namespace Minesweeper.Core;
+﻿using System.Collections.Generic;
+namespace Minesweeper.Core;
 
 public class Map
 {
     private int _mapSize;
     private int _mapBombs;
-    public List<string> _map { get; private set; } = new List<string>(); 
+    public List<string> map { get; private set; } = new List<string>(); 
 
     public int SetSize(int mapType) // Returns 1 if 1,2,3 not chosen
     {
@@ -49,38 +50,44 @@ public class Map
             {
                 if (bombCoords.Contains((x, y)))
                 {
-                    _map.Add(" b ");
+                    map.Add(" b ");
                     bombCoords.Remove((x, y));
                 }
                 else
                 {
-                    _map.Add(" . ");
+                    map.Add(" . ");
                 }
                 if (x == _mapSize - 1)
                 {
-                    _map.Add("\n");
+                    map.Add("\n");
                 }
             }
         }
+
+        Dictionary<string, Dictionary<int, List<(int, int)>>> bombCheck = new Dictionary<string, Dictionary<int, List<(int, int)>>>();
+        Dictionary<int, List<(int, int)>> amountAndCoords = new Dictionary<int, List<(int, int)>>();
 
         // Check positions on map for bomb amounts per tile
         for (int y = 0; y < _mapSize; y++)
         {
             for (int x = 0; x < _mapSize; x++)
             {
-                int posSym = CheckCoord(_map, (x, y), _mapSize);
-                if (_map[(_mapSize + 1) * y + x] != " b ")
+                amountAndCoords[0] = new List<(int, int)>();
+                bombCheck[" b "] = amountAndCoords;
+                Dictionary<string, Dictionary<int, List<(int, int)>>> result = CheckCoord(map, (x, y), _mapSize, bombCheck);
+                bombCheck[" b "] = result[" b "]; 
+
+                if (map[(_mapSize + 1) * y + x] != " b ")
                 {
-                    if (posSym != 0)
-                        _map[(_mapSize + 1) * y + x] = $" {posSym} ";
+                    if (result[" b "].Keys.ToList()[0] != 0)
+                        map[(_mapSize + 1) * y + x] = $" {result[" b "].Keys.ToList()[0]} ";
                 }
             }
         }
     }
 
-    public int CheckCoord(List<string> map, (int, int) coords, int mapSize)
+    public static Dictionary<string, Dictionary<int, List<(int, int)>>> CheckCoord(List<string> map, (int, int) coords, int mapSize, Dictionary<string, Dictionary<int, List<(int, int)>>> checks)
     {
-        int bombAmount = 0;
         int skipX = 2;
         int skipY = 2;
 
@@ -110,12 +117,27 @@ public class Map
 
                 if (checkCoord)
                 {
-                    if (map[(mapSize + 1) * (coords.Item2 + y) + (coords.Item1 + x)] == " b ")
-                        bombAmount += 1;
+                    foreach (string val in checks.Keys)
+                    {
+                        if (map[(mapSize + 1) * (coords.Item2 + y) + (coords.Item1 + x)] == val) 
+                        {
+                            Dictionary<int, List<(int, int)>> amountAndCoords = checks[val];
+                            List<int> amount = checks[val].Keys.ToList();
+                            List<(int, int)> aCoords = checks[val][amount[0]];
+
+                            amount[0] += 1;
+                            aCoords.Add((x, y));
+
+                            Dictionary<int, List<(int,int)>> newAmountAndCoords = new Dictionary<int, List<(int, int)>>();
+                            newAmountAndCoords[amount[0]] = aCoords;
+                            
+                            checks[val] = newAmountAndCoords;
+                        }
+                    }
                 }
             }
         }
-        return bombAmount;
+        return checks;
     }
 
 }
