@@ -4,12 +4,13 @@
 using System.Diagnostics;
 using System.Security.Cryptography.X509Certificates;
 using Minesweeper.Console;
+using System;
 namespace Minesweeper.Core;
 public static class Program
 {
     internal static void Main(string[] args)
     {
-        System.Console.Clear();
+        //System.Console.Clear();
         (int, int) sizeAndSeed = Menu.ProcessPrereqs();
         int size = sizeAndSeed.Item1;
         int seed = sizeAndSeed.Item2;
@@ -18,6 +19,7 @@ public static class Program
         stopwatch.Start();
 
         string currentTime = $"{stopwatch.Elapsed.TotalSeconds}";
+
         Menu.HomeScreen(seed, currentTime);
 
 
@@ -29,7 +31,7 @@ public static class Program
         {
             currentTime = $"{Math.Round(stopwatch.Elapsed.TotalSeconds, 2)} second(s)";
             Menu.HomeScreen(seed, currentTime);
-            GenMap.Display(map.map);
+            GenMap.Display(map.mapMask);
             Menu.Display(map); 
         }
     }
