@@ -6,9 +6,13 @@ internal static class GenMap
     public static void Display(List<string> map, int mapSize)
     {
         foreach (int i in Enumerable.Range(0, mapSize))
+        {
             Console.Write($" {i} ");
+        }
         Console.WriteLine();
-        int c = 0;
+
+        int yAxis = 0;
+        int xAxis = 0;
         foreach (string s in map)
         {
             if (s == "\n") { }
@@ -27,11 +31,17 @@ internal static class GenMap
             else if (s.ToArray()[1] == '7')
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
 
+            if (yAxis % 2 == 0)
+                Console.BackgroundColor = ConsoleColor.DarkGray;
+            xAxis++;
+
             if (s == "\n")
             {
-                Console.Write($" {c} ");
-                c++; // Get it?
+                Console.Write($" {yAxis} ");
+                yAxis++; // Get it?
+                xAxis = 0;
             }
+
             Console.Write(s);
 
             Console.ResetColor();
