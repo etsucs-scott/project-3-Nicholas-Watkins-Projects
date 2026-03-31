@@ -3,8 +3,12 @@
 /// </summary>
 internal static class GenMap
 {
-    public static void Display(List<string> map)
+    public static void Display(List<string> map, int mapSize)
     {
+        foreach (int i in Enumerable.Range(0, mapSize))
+            Console.Write($" {i} ");
+        Console.WriteLine();
+        int c = 0;
         foreach (string s in map)
         {
             if (s == "\n") { }
@@ -23,6 +27,11 @@ internal static class GenMap
             else if (s.ToArray()[1] == '7')
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
 
+            if (s == "\n")
+            {
+                Console.Write($" {c} ");
+                c++; // Get it?
+            }
             Console.Write(s);
 
             Console.ResetColor();

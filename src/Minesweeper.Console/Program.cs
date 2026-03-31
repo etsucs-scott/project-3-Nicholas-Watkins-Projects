@@ -22,7 +22,6 @@ public static class Program
 
         Menu.HomeScreen(seed, currentTime);
 
-
         Map map = new Map();
         map.SetSize(size);
         map.GenMap(seed);
@@ -31,7 +30,7 @@ public static class Program
         {
             currentTime = $"{Math.Round(stopwatch.Elapsed.TotalSeconds, 2)} second(s)";
             Menu.HomeScreen(seed, currentTime);
-            GenMap.Display(map.mapMask);
+            GenMap.Display(map.mapMask, map._mapSize);
             Menu.Display(map); 
         }
     }

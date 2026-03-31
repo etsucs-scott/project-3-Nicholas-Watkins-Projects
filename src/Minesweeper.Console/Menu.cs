@@ -19,6 +19,14 @@ public static class Menu
             int.TryParse(responsePieces[2], out y);
             map.Reveal((x, y));
         }
+        if (responsePieces[0] == "f")
+        {
+            int x;
+            int y;
+            int.TryParse(responsePieces[1], out x);
+            int.TryParse(responsePieces[2], out y);
+            map.Replace((x, y), " f ");
+        }
     }
     public static int GetSeed()
     {
