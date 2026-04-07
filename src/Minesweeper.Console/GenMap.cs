@@ -31,8 +31,10 @@ internal static class GenMap
             else if (s.ToArray()[1] == '7')
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
 
-            if (yAxis % 2 == 0)
-                Console.BackgroundColor = ConsoleColor.DarkGray;
+            if (yAxis % 2 == 0) // Makes a grid like pattern to see coords better
+            {
+                //Console.BackgroundColor = ConsoleColor.DarkGray;
+            }
             xAxis++;
 
             if (s == "\n")

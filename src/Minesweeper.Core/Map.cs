@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data;
 namespace Minesweeper.Core;
 
 public class Map
@@ -7,8 +8,9 @@ public class Map
     private int _mapBombs;
     public List<string> map { get; private set; } = new List<string>();
     public List<string> mapMask { get; private set;} = new List<string>();
+    private List<(int, int)> _hiddenSpaces = new List<(int, int)>();
 
-    public int SetSize(int mapType) // Returns 1 if 1,2,3 not chosen
+    public Map(int mapType)
     {
         switch (mapType)
         {
@@ -25,9 +27,8 @@ public class Map
                 _mapBombs = 40;
                 break;
             default:
-                return 1;
+                throw new ArgumentException("mapType has to be 1, 2, or 3!");
         }
-        return 0;
     }
 
     public void GenMap(int seed)
@@ -59,6 +60,7 @@ public class Map
                 {
                     map.Add(" . ");
                     mapMask.Add(" # ");
+                    _hiddenSpaces.Add((x, y));
                 }
                 if (x == _mapSize - 1)
                 {
@@ -174,7 +176,7 @@ public class Map
         }
     }
 */
-    public void Reveal((int, int) fCoord)
+    public bool Reveal((int, int) fCoord)
     {
         int listPosition = (_mapSize + 1) * fCoord.Item2 + fCoord.Item1;
         string coordSymbol = map[listPosition];
@@ -184,6 +186,11 @@ public class Map
         else if (coordSymbol != " . ")
         {
             mapMask[listPosition] = map[listPosition];
+            _hiddenSpaces.Remove(fCoord);
+            if (coordSymbol == " b ")
+            {
+                return true; // is Blown up
+            }
         }
         else
         {
@@ -216,6 +223,7 @@ public class Map
                             foreach ((int, int) coordinates in checkedCoords[key])
                             {
                                 coordProcessing.Enqueue(coordinates);
+                                _hiddenSpaces.Remove(coordinates);
                             }
                         } 
                         mapMask[mapPos] = map[mapPos];
@@ -229,6 +237,7 @@ public class Map
                 }
             }
         }
+        return false; // False is not blown up
     }
 
     public void Replace((int, int) coord, string symbol)
@@ -241,4 +250,11 @@ public class Map
             mapMask[listPosition] = symbol;
     }
 
+    public bool CheckedHiddenEmpty()
+    {
+        if (_hiddenSpaces.Count == 0)
+            return true;
+        else
+            return false;
+    }
 }

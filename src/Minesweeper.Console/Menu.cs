@@ -1,14 +1,12 @@
 using System.Drawing;
 using Minesweeper.Core;
 
-namespace Minesweeper.Console;
-
 public static class Menu
 {
-    public static void Display(Map map)
+    public static bool Display(Map map) // bool -> isblownUp
     {
-        System.Console.Write("> ");
-        string? response = System.Console.ReadLine();
+        Console.Write("> ");
+        string? response = Console.ReadLine();
 
         string[] responsePieces = response.Split(" ");
         if (responsePieces[0] == "r")
@@ -17,7 +15,13 @@ public static class Menu
             int y;
             int.TryParse(responsePieces[1], out x);
             int.TryParse(responsePieces[2], out y);
-            map.Reveal((x, y));
+            bool blownUp = map.Reveal((x, y));
+            if (blownUp)
+            {
+                Console.WriteLine("You have hit a bomb! Please hit enter to continue...");
+                Console.ReadLine();
+                return true;
+            }
         }
         if (responsePieces[0] == "f")
         {
@@ -27,6 +31,7 @@ public static class Menu
             int.TryParse(responsePieces[2], out y);
             map.Replace((x, y), " f ");
         }
+        return false;
     }
     public static int GetSeed()
     {
