@@ -9,7 +9,6 @@ Issues:
     - Game.cs needs to be implemented and same goes for seed.cs,
     - Invaild input still an issue
     - Tiebreaker using moves has not been implemented in CSVTest.cs in the sort
-    - Issue where some maps have a lack of bombs 
 ```
 TODO:
 ```

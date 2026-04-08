@@ -39,9 +39,16 @@ public class Map
         // Bomb generation for map (coords)
         for (int i = 0; i < _mapBombs; i++)
         {
-            int x = coordGen.Next(0, _mapSize - 1);
-            int y = coordGen.Next(0, _mapSize - 1);
-
+            bool coordMatch = true;
+            int x = -1;
+            int y = -1;
+            while (coordMatch)
+            {
+                x = coordGen.Next(0, _mapSize);
+                y = coordGen.Next(0, _mapSize);
+                if (!bombCoords.Contains((x, y)))
+                    coordMatch = false;
+            }
             bombCoords.Add((x, y));
         }
 
