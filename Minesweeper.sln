@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Minesweeper.Core", "src\Min
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Minesweeper.Console", "src\Minesweeper.Console\Minesweeper.Console.csproj", "{61EC50D2-BF24-4A3B-A5AB-9BC844B84682}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Minesweeper.Console.Tests", "src\Minesweeper.Console.Tests\Minesweeper.Console.Tests.csproj", "{0BB5B1E4-3486-4966-9B06-81EDF9EB21FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Minesweeper.Core.Tests", "src\Minesweeper.Core.Tests\Minesweeper.Core.Tests.csproj", "{EDABDC29-096A-4451-876B-9FFFD68C500E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +47,30 @@ Global
 		{61EC50D2-BF24-4A3B-A5AB-9BC844B84682}.Release|x64.Build.0 = Release|Any CPU
 		{61EC50D2-BF24-4A3B-A5AB-9BC844B84682}.Release|x86.ActiveCfg = Release|Any CPU
 		{61EC50D2-BF24-4A3B-A5AB-9BC844B84682}.Release|x86.Build.0 = Release|Any CPU
+		{0BB5B1E4-3486-4966-9B06-81EDF9EB21FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BB5B1E4-3486-4966-9B06-81EDF9EB21FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BB5B1E4-3486-4966-9B06-81EDF9EB21FC}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0BB5B1E4-3486-4966-9B06-81EDF9EB21FC}.Debug|x64.Build.0 = Debug|Any CPU
+		{0BB5B1E4-3486-4966-9B06-81EDF9EB21FC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0BB5B1E4-3486-4966-9B06-81EDF9EB21FC}.Debug|x86.Build.0 = Debug|Any CPU
+		{0BB5B1E4-3486-4966-9B06-81EDF9EB21FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BB5B1E4-3486-4966-9B06-81EDF9EB21FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BB5B1E4-3486-4966-9B06-81EDF9EB21FC}.Release|x64.ActiveCfg = Release|Any CPU
+		{0BB5B1E4-3486-4966-9B06-81EDF9EB21FC}.Release|x64.Build.0 = Release|Any CPU
+		{0BB5B1E4-3486-4966-9B06-81EDF9EB21FC}.Release|x86.ActiveCfg = Release|Any CPU
+		{0BB5B1E4-3486-4966-9B06-81EDF9EB21FC}.Release|x86.Build.0 = Release|Any CPU
+		{EDABDC29-096A-4451-876B-9FFFD68C500E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDABDC29-096A-4451-876B-9FFFD68C500E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDABDC29-096A-4451-876B-9FFFD68C500E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{EDABDC29-096A-4451-876B-9FFFD68C500E}.Debug|x64.Build.0 = Debug|Any CPU
+		{EDABDC29-096A-4451-876B-9FFFD68C500E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EDABDC29-096A-4451-876B-9FFFD68C500E}.Debug|x86.Build.0 = Debug|Any CPU
+		{EDABDC29-096A-4451-876B-9FFFD68C500E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDABDC29-096A-4451-876B-9FFFD68C500E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDABDC29-096A-4451-876B-9FFFD68C500E}.Release|x64.ActiveCfg = Release|Any CPU
+		{EDABDC29-096A-4451-876B-9FFFD68C500E}.Release|x64.Build.0 = Release|Any CPU
+		{EDABDC29-096A-4451-876B-9FFFD68C500E}.Release|x86.ActiveCfg = Release|Any CPU
+		{EDABDC29-096A-4451-876B-9FFFD68C500E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -50,5 +78,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{B11E29CC-5419-4076-8B5A-E224BCBD731A} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 		{61EC50D2-BF24-4A3B-A5AB-9BC844B84682} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
+		{0BB5B1E4-3486-4966-9B06-81EDF9EB21FC} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
+		{EDABDC29-096A-4451-876B-9FFFD68C500E} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 	EndGlobalSection
 EndGlobal
