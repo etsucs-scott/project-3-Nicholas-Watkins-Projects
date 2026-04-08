@@ -1,39 +1,47 @@
 using System.Drawing;
-using System.Security.Cryptography.X509Certificates;
-namespace Minesweeper.Console;
+using Minesweeper.Core;
 
 public static class Menu
 {
-    public static (int, int, int) Display() // Needs improvement, will break by player
+    public static int Display(Map map) // bool -> isblownUp
     {
-        System.Console.Write("> ");
-        string? response = System.Console.ReadLine();
-        string[] responseSplit = response.Split(' ');
+        Console.Write("> ");
+        string? response = Console.ReadLine();
 
-        if (responseSplit[0] == "r")
+        string[] responsePieces = response.Split(" ");
+        if (responsePieces.Length <= 2)
+        {
+            Console.WriteLine("Please input a correct commands.\nPlease hit enter to continue...");
+            Console.ReadLine();
+        }
+        else if (responsePieces[0] == "r")
         {
             int x;
             int y;
-            int.TryParse(responseSplit[1], out x);
-            int.TryParse(responseSplit[2], out y);
-            return (x, y, 0);
+            int.TryParse(responsePieces[1], out x);
+            int.TryParse(responsePieces[2], out y);
+            bool blownUp = map.Reveal((x, y));
+            if (blownUp)
+            {
+                Console.WriteLine("You have hit a bomb! Please hit enter to continue...");
+                Console.ReadLine();
+                return 1; // Bomb hit
+            }
         }
-
-        if (responseSplit[0] == "f")
+        else if (responsePieces[0] == "f")
         {
             int x;
             int y;
-            int.TryParse(responseSplit[1], out x);
-            int.TryParse(responseSplit[2], out y);
-            return (x, y, 1);
+            int.TryParse(responsePieces[1], out x);
+            int.TryParse(responsePieces[2], out y);
+            map.Replace((x, y), " f ");
         }
+        if (responsePieces[0] == "q")
+            return -1; // Quit code
+        if (responsePieces[0] == "win")
+            return -2; // Insta win/set reveal board empty
 
-        if (responseSplit[0] == "q")
-        {
-            return (-2, -2, -2);
-        }
-
-        return (-1, -1, -1);
+        return 0; // Fine
     }
     public static int GetSeed()
     {
@@ -46,7 +54,7 @@ public static class Menu
         if (seed == 0)
         {
             seed = (int)DateTime.Now.Ticks;
-            seed = 12345; // Can easily edit to change default seed | Set to 12345 for testing 
+            // seed = 12345; // Can easily edit to change default seed | Set to 12345 for testing 
         }
 
         return seed;

@@ -1,43 +1,54 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/ozVFrFMv)
-# CSCI 1260 — Project
+### Building and running
 
-## Project Instructions
-All project requirements, grading criteria, and submission details are provided on **D2L**.  
-Refer to D2L as the *authoritative source* for this assignment.
-
-This repository is intentionally minimal. You are responsible for:
-- Creating the solution and projects
-- Designing the class structure
-- Implementing the required functionality
-
----
-
-## Getting Started (CLI)
-
-You may use **Visual Studio**, **VS Code**, or the **terminal**.
-
-### Create a solution
-```bash
-dotnet new sln -n ProjectName
-```
-
-### Create a project (example: console app)
-```bash
-dotnet new console -n ProjectName.App
-```
-
-### Add the project to the solution
-```bash
-dotnet sln add ProjectName.App
-```
-
-### Build and run
+While in the project directory, run:
 ```bash
 dotnet build
-dotnet run --project ProjectName.App
+dotnet run --project src/Minesweeper.Console
 ```
 
-## Notes
-- Commit early and commit often.
-- Your repository history is part of your submission.
-- Update this README with build/run instructions specific to your project.
+### Board size 
+
+The board can come in 3 sizes:
+```
+8x8 - 10 mines
+12x12 - 25 mines
+16x16 - 40 mines
+```
+You choose the size at the start of the game.
+
+### Input commands
+```
+r 0 0 - reveal row column 
+f 0 0 - flag row column
+q - quits the game
+```
+
+### Highscores
+
+Highscores are stored in save.csv in the project directory.
+You can open it in Microsoft Excel or LibreOffice Calc.
+The format is:
+board size, 
+seconds it took to win the game, 
+number of moves it took to win the game, 
+the games seed, 
+and the timestamp of when the game was complete.
+i.e.
+"size, seconds, moves, seed, timestamp"
+
+### Board symbols
+```
+Hidden tiles -> #
+Flag -> f
+Mine (hit) -> b
+Empty space -> .
+Mines close by -> 1-8
+```
+
+### How to run unit tests
+
+while in the project directory, run:
+ ```bash
+dotnet build
+dotnet test
+ ```

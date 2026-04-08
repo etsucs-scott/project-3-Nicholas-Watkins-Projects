@@ -3,9 +3,17 @@
 /// </summary>
 internal static class GenMap
 {
-    public static void Display(List<(bool, string)> map)
+    public static void Display(List<string> map, int mapSize)
     {
-        foreach ((bool, string) displayString in map)
+        foreach (int i in Enumerable.Range(0, mapSize))
+        {
+            Console.Write($" {i} ");
+        }
+        Console.WriteLine();
+
+        int yAxis = 0;
+        int xAxis = 0;
+        foreach (string s in map)
         {
             string s = displayString.Item2;
             if (s == "\n") { }
@@ -23,6 +31,21 @@ internal static class GenMap
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
             else if (s.ToArray()[1] == '7')
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
+            else if (s.ToArray()[1] == 'f')
+                Console.ForegroundColor = ConsoleColor.Magenta;
+
+            if (yAxis % 2 == 0) // Makes a grid like pattern to see coords better
+            {
+                //Console.BackgroundColor = ConsoleColor.DarkGray;
+            }
+            xAxis++;
+
+            if (s == "\n")
+            {
+                Console.Write($" {yAxis} ");
+                yAxis++; // Get it?
+                xAxis = 0;
+            }
 
             if (displayString.Item1)
             {

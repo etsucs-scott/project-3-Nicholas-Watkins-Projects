@@ -1,13 +1,16 @@
-﻿namespace Minesweeper.Core;
+﻿using System.Collections.Generic;
+using System.Data;
+namespace Minesweeper.Core;
 
 public class Map
 {
-    private int _mapSize;
+    public int _mapSize { get; private set; }
     private int _mapBombs;
-    public List<(bool,string)> _map { get; private set; } = new List<(bool, string)>(); 
-    public List<(int, int)> bombCoords { get; private set; } = new List<(int, int)>();
+    public List<string> map { get; private set; } = new List<string>();
+    public List<string> mapMask { get; private set;} = new List<string>();
+    private List<(int, int)> _hiddenSpaces = new List<(int, int)>();
 
-    public int SetSize(int mapType) // Returns 1 if 1,2,3 not chosen
+    public Map(int mapType)
     {
         switch (mapType)
         {
@@ -24,9 +27,8 @@ public class Map
                 _mapBombs = 40;
                 break;
             default:
-                return 1;
+                throw new ArgumentException("mapType has to be 1, 2, or 3!");
         }
-        return 0;
     }
 
     public void GenMap(int seed)
@@ -36,9 +38,16 @@ public class Map
         // Bomb generation for map (coords)
         for (int i = 0; i < _mapBombs; i++)
         {
-            int x = coordGen.Next(0, _mapSize - 1);
-            int y = coordGen.Next(0, _mapSize - 1);
-
+            bool coordMatch = true;
+            int x = -1;
+            int y = -1;
+            while (coordMatch)
+            {
+                x = coordGen.Next(0, _mapSize);
+                y = coordGen.Next(0, _mapSize);
+                if (!bombCoords.Contains((x, y)))
+                    coordMatch = false;
+            }
             bombCoords.Add((x, y));
         }
 
@@ -49,37 +58,48 @@ public class Map
             {
                 if (bombCoords.Contains((x, y)))
                 {
-                    _map.Add((false, " b "));
+                    map.Add(" b ");
+                    mapMask.Add(" # ");
+                    bombCoords.Remove((x, y));
                 }
                 else
                 {
-                    _map.Add((false, " . "));
+                    map.Add(" . ");
+                    mapMask.Add(" # ");
+                    _hiddenSpaces.Add((x, y));
                 }
                 if (x == _mapSize - 1)
                 {
-                    _map.Add((true, "\n"));
+                    map.Add("\n");
+                    mapMask.Add("\n");
                 }
             }
         }
+
+        Dictionary<string, List<(int, int)>> bombCheck = new Dictionary<string, List<(int, int)>>();
+        List<(int, int)> amountAndCoords = new List<(int, int)>();
 
         // Check positions on map for bomb amounts per tile
         for (int y = 0; y < _mapSize; y++)
         {
             for (int x = 0; x < _mapSize; x++)
             {
-                int posSym = CheckCoord(_map, (x, y), _mapSize);
-                if (_map[(_mapSize + 1) * y + x].Item2 != " b ")
+                amountAndCoords = new List<(int, int)>();
+                bombCheck[" b "] = amountAndCoords;
+                Dictionary<string, List<(int, int)>> result = CheckCoord(map, (x, y), _mapSize, bombCheck);
+                bombCheck[" b "] = result[" b "]; 
+
+                if (map[(_mapSize + 1) * y + x] != " b ")
                 {
-                    if (posSym != 0)
-                        _map[(_mapSize + 1) * y + x] = (false, $" {posSym} ");
+                    if (result[" b "].Count != 0)
+                        map[(_mapSize + 1) * y + x] = $" {result[" b "].Count} ";
                 }
             }
         }
     }
 
-    public int CheckCoord(List<(bool, string)> map, (int, int) coords, int mapSize)
+    public static Dictionary<string, List<(int, int)>> CheckCoord(List<string> map, (int, int) coords, int mapSize, Dictionary<string, List<(int, int)>> checks)
     {
-        int bombAmount = 0;
         int skipX = 2;
         int skipY = 2;
 
@@ -109,26 +129,143 @@ public class Map
 
                 if (checkCoord)
                 {
-                    if (map[(mapSize + 1) * (coords.Item2 + y) + (coords.Item1 + x)].Item2 == " b ")
-                        bombAmount += 1;
+                    foreach (string val in checks.Keys)
+                    {
+                        if (val == "all")
+                        {
+                            List<(int, int)> valCoords = checks[val];
+
+                            valCoords.Add((x + coords.Item1, y + coords.Item2));
+                            
+                            checks[val] = valCoords;
+                        }
+
+                        if (map[(mapSize + 1) * (coords.Item2 + y) + (coords.Item1 + x)] == val) 
+                        {
+                            List<(int, int)> valCoords = checks[val];
+
+                            valCoords.Add((x + coords.Item1, y + coords.Item2));
+                            
+                            checks[val] = valCoords;
+                        }
+                    }
                 }
             }
         }
-        return bombAmount;
+        return checks;
+    }
+/*
+    public void Reveal((int, int) coord)
+    {
+        int listPosition = (_mapSize + 1) * coord.Item2 + coord.Item1;
+        mapMask[listPosition] = map[listPosition];
+        map[listPosition] = " ! "; // Used space
+        
+        Dictionary<string, Dictionary<int, List<(int, int)>>> emptyCheck = new Dictionary<string, Dictionary<int, List<(int, int)>>>();
+        Dictionary<int, List<(int, int)>> amountAndCoords = new Dictionary<int, List<(int, int)>>();
+
+        amountAndCoords[0] = new List<(int, int)>();
+        emptyCheck[" . "] = amountAndCoords;
+
+        emptyCheck = CheckCoord(this.map, coord, this._mapSize, emptyCheck);
+        amountAndCoords = emptyCheck[" . "];
+        int amountOfDots = amountAndCoords.Keys.ToList()[0];
+        List<(int, int)> dotCoords = amountAndCoords[amountOfDots];
+        dotCoords.Remove(coord);
+
+        if (amountOfDots != 0)
+        {
+            foreach (var dotCoord in dotCoords)
+            {
+                Reveal(dotCoord);
+            }
+        }
+    }
+*/
+    public bool Reveal((int, int) fCoord)
+    {
+        int listPosition = (_mapSize + 1) * fCoord.Item2 + fCoord.Item1;
+        string coordSymbol = map[listPosition];
+        string maskCoordSymbol = mapMask[listPosition];
+
+        if (maskCoordSymbol == " f ") { }
+        else if (coordSymbol != " . ")
+        {
+            mapMask[listPosition] = map[listPosition];
+            _hiddenSpaces.Remove(fCoord);
+            if (coordSymbol == " b ")
+            {
+                return true; // is Blown up
+            }
+        }
+        else
+        {
+            List<(int,int)> coordsProccessed = new List<(int, int)>();
+            Queue<(int, int)> coordProcessing = new Queue<(int, int)>();
+            coordProcessing.Enqueue(fCoord);
+
+            while (true)
+            {
+                if (coordProcessing.Count == 0)
+                    break;
+                if(coordsProccessed.Contains(coordProcessing.Peek()))
+                {
+                    coordProcessing.Dequeue();
+                }
+                else
+                {
+                    (int, int) coord = coordProcessing.Dequeue();
+                    int mapPos = (_mapSize + 1) * coord.Item2 + coord.Item1;
+                    string coordMapSymbol = map[mapPos];
+
+                    if (coordMapSymbol == " . ")
+                    {
+                        Dictionary<string, List<(int, int)>> checkedCoords = new Dictionary<string, List<(int, int)>>();
+                        checkedCoords["all"] = new List<(int, int)>();
+                        checkedCoords = CheckCoord(map, coord, _mapSize, checkedCoords);
+
+                        foreach (string key in checkedCoords.Keys.ToList())
+                        {
+                            foreach ((int, int) coordinates in checkedCoords[key])
+                            {
+                                coordProcessing.Enqueue(coordinates);
+                                _hiddenSpaces.Remove(coordinates);
+                            }
+                        } 
+                        mapMask[mapPos] = map[mapPos];
+                        coordsProccessed.Add(coord);
+                    }
+                    else
+                    {
+                        mapMask[mapPos] = map[mapPos];
+                        coordsProccessed.Add(coord);
+                    }
+                }
+            }
+        }
+        return false; // False is not blown up
     }
 
-    public bool reveal((int, int) coords)
+    public void Replace((int, int) coord, string symbol)
     {
-        int indexLocation = (_mapSize + 1) * coords.Item2 + coords.Item1;
-        _map[indexLocation] = (true, _map[indexLocation].Item2);
-        if (_map[indexLocation].Item2 == " b ")
-        {
+        int listPosition = (_mapSize + 1) * coord.Item2 + coord.Item1;
+        if (mapMask[listPosition] == " . ") {}
+        else if (mapMask[listPosition] == " f ")
+            mapMask[listPosition] = " # ";
+        else if (mapMask[listPosition] == " # ")
+            mapMask[listPosition] = symbol;
+    }
+
+    public bool CheckedHiddenEmpty()
+    {
+        if (_hiddenSpaces.Count == 0)
             return true;
-        }
-        else if (_map[indexLocation].Item2 == " . ")
-        {
-            
-        }
-        return false;
+        else
+            return false;
+    }
+
+    public void SetHiddenEmpty()
+    {
+        _hiddenSpaces = new List<(int, int)>();
     }
 }
