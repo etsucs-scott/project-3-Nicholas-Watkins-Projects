@@ -34,7 +34,6 @@ public class Map
     public void GenMap(int seed)
     {
         Random coordGen = new Random(seed);
-        List<(int, int)> bombCoords = new List<(int, int)>();
 
         // Bomb generation for map (coords)
         for (int i = 0; i < _mapBombs; i++)
