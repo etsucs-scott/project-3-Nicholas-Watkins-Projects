@@ -1,7 +1,15 @@
 namespace Minesweeper.Core;
 
+/// <summary>
+/// Contains sorting algorithms 
+/// </summary>
 public static class Sorting
 {
+    /// <summary>
+    /// A selection sorting algorithm to sort a string of data from a CSV based off the time 
+    /// </summary>
+    /// <param name="data">List to be sorted</param>
+    /// <returns>the sorted list</returns>
     public static List<string> SelectionSort(List<string> data)
     {
         for (int i = 0; i < data.Count - 1; i++)
@@ -18,4 +26,5 @@ public static class Sorting
         }
         return data;
     }
+
 }

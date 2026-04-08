@@ -9,7 +9,12 @@ public static class Menu
         string? response = Console.ReadLine();
 
         string[] responsePieces = response.Split(" ");
-        if (responsePieces[0] == "r")
+        if (responsePieces.Length <= 2)
+        {
+            Console.WriteLine("Please input a correct commands.\nPlease hit enter to continue...");
+            Console.ReadLine();
+        }
+        else if (responsePieces[0] == "r")
         {
             int x;
             int y;
@@ -23,7 +28,7 @@ public static class Menu
                 return 1; // Bomb hit
             }
         }
-        if (responsePieces[0] == "f")
+        else if (responsePieces[0] == "f")
         {
             int x;
             int y;
