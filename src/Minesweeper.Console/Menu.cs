@@ -3,7 +3,7 @@ using Minesweeper.Core;
 
 public static class Menu
 {
-    public static bool Display(Map map) // bool -> isblownUp
+    public static int Display(Map map) // bool -> isblownUp
     {
         Console.Write("> ");
         string? response = Console.ReadLine();
@@ -20,7 +20,7 @@ public static class Menu
             {
                 Console.WriteLine("You have hit a bomb! Please hit enter to continue...");
                 Console.ReadLine();
-                return true;
+                return 1; // Bomb hit
             }
         }
         if (responsePieces[0] == "f")
@@ -31,7 +31,12 @@ public static class Menu
             int.TryParse(responsePieces[2], out y);
             map.Replace((x, y), " f ");
         }
-        return false;
+        if (responsePieces[0] == "q")
+            return -1; // Quit code
+        if (responsePieces[0] == "win")
+            return -2; // Insta win/set reveal board empty
+
+        return 0; // Fine
     }
     public static int GetSeed()
     {

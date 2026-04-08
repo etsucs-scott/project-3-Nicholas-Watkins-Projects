@@ -14,7 +14,14 @@ public class CSVTest
     private List<string> size12;
     private List<string> size16;
 
-
+    public void CheckSaveFile()
+    {
+        if (!File.Exists(saveFile))
+        {
+            File.Create(saveFile);
+            File.WriteAllText(saveFile, "size,seconds,moves,seed,timestamp\n");
+        }
+    }
 
 
 
@@ -24,6 +31,7 @@ public class CSVTest
 
     public void Save()
     {
+        CheckSaveFile();
         _timeStamp = DateTime.Now.ToString("MM/dd/yy hh:mm tt");
         File.AppendAllText(saveFile, $"{_size},{_seconds},{_moves},{_seed},{_timeStamp}\n");
     }

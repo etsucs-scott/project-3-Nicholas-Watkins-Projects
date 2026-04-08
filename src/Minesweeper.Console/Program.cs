@@ -35,9 +35,13 @@ public static class Program
                 currentTime = $"{Math.Round(stopwatch.Elapsed.TotalSeconds, 2)} second(s)";
                 Menu.HomeScreen(seed, currentTime);
                 GenMap.Display(map.mapMask, map._mapSize);
-                bool isBlownUp = Menu.Display(map);
-                if (isBlownUp)
+                int playerInput = Menu.Display(map);
+
+                if (playerInput == 1 || playerInput == -1)
                     break;
+                else if (playerInput == -2)
+                    map.SetHiddenEmpty();
+
                 moves += 1;
                 notWin = !map.CheckedHiddenEmpty(); // If not empty == not win, if empty is win
             }

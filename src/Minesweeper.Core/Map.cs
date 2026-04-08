@@ -257,4 +257,9 @@ public class Map
         else
             return false;
     }
+
+    public void SetHiddenEmpty()
+    {
+        _hiddenSpaces = new List<(int, int)>();
+    }
 }
