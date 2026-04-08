@@ -49,7 +49,7 @@ public static class Menu
         if (seed == 0)
         {
             seed = (int)DateTime.Now.Ticks;
-            seed = 12345; // Can easily edit to change default seed | Set to 12345 for testing 
+            // seed = 12345; // Can easily edit to change default seed | Set to 12345 for testing 
         }
 
         return seed;

@@ -18,8 +18,8 @@ You choose the size at the start of the game.
 
 ### Input commands
 ```
-r 0 0 - reveal x coord y coord
-f 0 0 - flag x coord y coord
+r 0 0 - reveal row column 
+f 0 0 - flag row column
 q - quits the game
 ```
 
@@ -46,4 +46,9 @@ Mines close by -> 1-8
 ```
 
 ### How to run unit tests
-IN PROGRESS
+
+while in the project directory, run:
+ ```bash
+dotnet build
+dotnet test
+ ```
