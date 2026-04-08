@@ -3,6 +3,8 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+namespace Minesweeper.Core;
+
 public class CSVTest
 {
     private int _size;
@@ -24,29 +26,13 @@ public class CSVTest
             File.AppendAllText(saveFile, "size,seconds,moves,seed,timestamp\n");
         }
     }
-    private List<string> SelectionSort(List<string> data)
-    {
-        for (int i = 0; i < data.Count - 1; i++)
-        {
-            int minIndex = i;
-            for (int j = i + 1; j < data.Count; j++)
-            {
-                if (float.Parse(data[j].Split(",")[1]) < float.Parse(data[minIndex].Split(",")[1]))
-                {
-                    minIndex = j;
-                }
-            }
-            (data[i], data[minIndex]) = (data[minIndex], data[i]);
-        }
-        return data;
-    }
     private void OrganizeSaves()
     {
-        List<string> sortedSaves = SelectionSort(size8);
+        List<string> sortedSaves = Sorting.SelectionSort(size8);
         size8 = sortedSaves;
-        sortedSaves = SelectionSort(size12);
+        sortedSaves = Sorting.SelectionSort(size12);
         size12 = sortedSaves;
-        sortedSaves = SelectionSort(size16);
+        sortedSaves = Sorting.SelectionSort(size16);
         size16 = sortedSaves;
 
         size8 = size8.Take(5).ToList();
