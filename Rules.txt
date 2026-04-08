@@ -21,6 +21,7 @@ Task 2 — Files + Exception Handling
 Load high scores from a file in data/ (create if missing).
 Record new high scores back to the same file.
 Handle missing/invalid files safely (no crashes; show meaningful errors).
+
 High Score Rules (Required)
 High score = fastest completion time in seconds.
 Tie-breaker: fewer moves wins.

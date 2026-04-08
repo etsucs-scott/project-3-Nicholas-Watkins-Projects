@@ -1,5 +1,6 @@
 
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Collections.Generic;
 public class CSVTest
 {
     private int _size;
@@ -8,37 +9,40 @@ public class CSVTest
     private int _seed;
     private string _timeStamp;
     private string saveFile = "../../save.csv";
+    private List<string> saveInfo;
+    private List<string> size8;
+    private List<string> size12;
+    private List<string> size16;
+
+
+
+
+
+
+
+
 
     public void Save()
     {
         _timeStamp = DateTime.Now.ToString("MM/dd/yy hh:mm tt");
         File.AppendAllText(saveFile, $"{_size},{_seconds},{_moves},{_seed},{_timeStamp}\n");
     }
-    public void Retrieve(int saveFilePosition)
+
+
+
+    public void Retrieve()
     {
-        string[] saves = File.ReadAllLines(saveFile);
-        string[] vars = saves[saveFilePosition].Split(",");
-        _size = int.Parse(vars[0]);
-        _seconds = float.Parse(vars[1]);
-        _moves = int.Parse(vars[2]);
-        _seed = int.Parse(vars[3]);
-        _timeStamp = vars[4];
+        saveInfo = File.ReadAllLines(saveFile).ToList();
+        saveInfo.RemoveAt(0); // Make sure the header is not in list
     }
-    public void Show()
-    {
-        Console.WriteLine($"Size\tSeconds\tMoves\tSeed\tTimestamp\n{_size}\t{_seconds}\t{_moves}\t{_seed}\t{_timeStamp}");
-    }
-    public void UpdateTerm()
-    {
-        Console.Write("Size: ");
-        _size = int.Parse(Console.ReadLine());
-        Console.Write("Secs: ");
-        _seconds = float.Parse(Console.ReadLine());
-        Console.Write("Moves: ");
-        _moves = int.Parse(Console.ReadLine());
-        Console.Write("Seed: ");
-        _seed = int.Parse(Console.ReadLine());
-    }
+
+
+
+
+
+
+
+
     public void Update(int size, float seconds, int moves, int seed)
     {
         _size = size;
