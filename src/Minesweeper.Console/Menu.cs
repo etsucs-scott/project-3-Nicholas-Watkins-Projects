@@ -3,6 +3,11 @@ using Minesweeper.Core;
 
 public static class Menu
 {
+    /// <summary>
+    /// Displays the player input handling
+    /// </summary>
+    /// <param name="map">Needs a map object</param>
+    /// <returns>Exit codes, 0 being fine, 1 bomb hit, -1 quit, -2 instant win</returns>
     public static int Display(Map map) // bool -> isblownUp
     {
         Console.Write("> ");
@@ -43,6 +48,11 @@ public static class Menu
 
         return 0; // Fine
     }
+    
+    /// <summary>
+    /// Gets the seed value from player
+    /// </summary>
+    /// <returns>seed</returns>
     public static int GetSeed()
     {
         System.Console.Write("\nEnter a seed or leave blank random (time based)\n?: ");
@@ -59,6 +69,11 @@ public static class Menu
 
         return seed;
     }
+    
+    /// <summary>
+    /// Gets the size value from the player 
+    /// </summary>
+    /// <returns>size</returns>
     public static int GetSize()
     {
         System.Console.Write("Enter a map size\n1: 8x8 10 mines\t\t2: 12x12 25 mines\t\t3: 16x16 40 mines\n?:  ");
@@ -70,6 +85,12 @@ public static class Menu
         else
             return 0;
     }
+
+    /// <summary>
+    /// Displays the homescreen with the seed and time, basic the title and creators name
+    /// </summary>
+    /// <param name="seed">the seed from the game</param>
+    /// <param name="time">the current time, in seconds</param>
     public static void HomeScreen(int seed, string time)
     {
         System.Console.Clear();
@@ -77,6 +98,11 @@ public static class Menu
         System.Console.WriteLine("\nCommands: r row col | f row col | q\n");
         System.Console.WriteLine($"Seed: {seed} | Time: {time}");
     }
+
+    /// <summary>
+    /// Processes the seed and size from the player while handling any error...
+    /// </summary>
+    /// <returns>(size, seed)</returns>
     public static (int, int) ProcessPrereqs() // Get size and seed from play and handle errors
     {
         int size;

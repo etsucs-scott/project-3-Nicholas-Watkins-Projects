@@ -3,6 +3,11 @@
 /// </summary>
 internal static class GenMap
 {
+    /// <summary>
+    /// Displays the map/board onto the screen using console 
+    /// </summary>
+    /// <param name="map">A list of strings that hold all symbols to be displayed</param>
+    /// <param name="mapSize">How big the map/board is</param>
     public static void Display(List<string> map, int mapSize)
     {
         foreach (int i in Enumerable.Range(0, mapSize))

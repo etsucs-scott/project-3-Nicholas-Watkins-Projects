@@ -5,6 +5,9 @@ using System.Drawing;
 using System.Linq;
 namespace Minesweeper.Core;
 
+/// <summary>
+/// Handles CSV data from a file 
+/// </summary>
 public class CSVTest
 {
     private int _size;
@@ -18,6 +21,10 @@ public class CSVTest
     private List<string> size12 = new List<string>();
     private List<string> size16 = new List<string>();
     private List<string> highscores = new List<string>();
+
+    /// <summary>
+    /// Checks for the save file to see if it exists, if not make it 
+    /// </summary>
     private void CheckSaveFile() // Creates the save file if it doesn't exist
     {
         if (!File.Exists(saveFile))
@@ -26,6 +33,10 @@ public class CSVTest
             File.AppendAllText(saveFile, "size,seconds,moves,seed,timestamp\n");
         }
     }
+
+    /// <summary>
+    /// Organize the saves using a sorting algorithm and taking the top 5
+    /// </summary>
     private void OrganizeSaves()
     {
         List<string> sortedSaves = Sorting.SelectionSort(size8);
@@ -43,6 +54,10 @@ public class CSVTest
         highscores.AddRange(size12);
         highscores.AddRange(size16);
     }
+
+    /// <summary>
+    /// Retrieves save data from the file
+    /// </summary>
     private void Retrieve()
     {
         saveInfo = File.ReadAllLines(saveFile).ToList();
@@ -52,6 +67,11 @@ public class CSVTest
             SortToSize(item);
         }
     }
+
+    /// <summary>
+    /// Sorts the save to either size list i.e. (size8, size12, size16)
+    /// </summary>
+    /// <param name="save">A single save string</param>
     private void SortToSize(string save)
     {
         string[] items = save.Split(",");
@@ -62,6 +82,14 @@ public class CSVTest
         if (items[0] == "16")
             size16.Add(save);
     }
+
+    /// <summary>
+    /// Updates the current object with these values
+    /// </summary>
+    /// <param name="size">map size</param>
+    /// <param name="seconds">the seconds it took to beat the game</param>
+    /// <param name="moves">the amount of moves it took to beat the game</param>
+    /// <param name="seed">the seed of the game that was beat</param>
     public void Update(int size, float seconds, int moves, int seed)
     {
         _size = size;
@@ -69,6 +97,11 @@ public class CSVTest
         _moves = moves;
         _seed = seed;
     }
+
+    /// <summary>
+    /// Saves the highscores to the file
+    /// </summary>
+    /// <value></value>
     public void Save() // Saves the file with highscores
     {
         CheckSaveFile();

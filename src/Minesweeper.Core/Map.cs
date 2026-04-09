@@ -2,6 +2,9 @@
 using System.Data;
 namespace Minesweeper.Core;
 
+/// <summary>
+/// A map object that holds the map and mask and the ability to change
+/// </summary> 
 public class Map
 {
     public int _mapSize { get; private set; }
@@ -10,6 +13,11 @@ public class Map
     public List<string> mapMask { get; private set;} = new List<string>();
     private List<(int, int)> _hiddenSpaces = new List<(int, int)>();
 
+    /// <summary>
+    /// Constructor function for map
+    /// </summary>
+    /// <param name="mapType">Numbers 1 - 3</param>
+    /// <exception cref="ArgumentException">Will cause an exception if not 1-3</exception>
     public Map(int mapType)
     {
         switch (mapType)
@@ -31,6 +39,10 @@ public class Map
         }
     }
 
+    /// <summary>
+    /// Generates the Map and MapMask variable
+    /// </summary>
+    /// <param name="seed">The seed is any integer </param>
     public void GenMap(int seed)
     {
         Random coordGen = new Random(seed);
@@ -99,6 +111,9 @@ public class Map
         }
     }
 
+    /// <summary>
+    /// Checks the coordinates around a coord in a 3x3 area and returns what it found based on the dictionary string passed in
+    /// </summary>
     public static Dictionary<string, List<(int, int)>> CheckCoord(List<string> map, (int, int) coords, int mapSize, Dictionary<string, List<(int, int)>> checks)
     {
         int skipX = 2;
@@ -155,34 +170,10 @@ public class Map
         }
         return checks;
     }
-/*
-    public void Reveal((int, int) coord)
-    {
-        int listPosition = (_mapSize + 1) * coord.Item2 + coord.Item1;
-        mapMask[listPosition] = map[listPosition];
-        map[listPosition] = " ! "; // Used space
-        
-        Dictionary<string, Dictionary<int, List<(int, int)>>> emptyCheck = new Dictionary<string, Dictionary<int, List<(int, int)>>>();
-        Dictionary<int, List<(int, int)>> amountAndCoords = new Dictionary<int, List<(int, int)>>();
-
-        amountAndCoords[0] = new List<(int, int)>();
-        emptyCheck[" . "] = amountAndCoords;
-
-        emptyCheck = CheckCoord(this.map, coord, this._mapSize, emptyCheck);
-        amountAndCoords = emptyCheck[" . "];
-        int amountOfDots = amountAndCoords.Keys.ToList()[0];
-        List<(int, int)> dotCoords = amountAndCoords[amountOfDots];
-        dotCoords.Remove(coord);
-
-        if (amountOfDots != 0)
-        {
-            foreach (var dotCoord in dotCoords)
-            {
-                Reveal(dotCoord);
-            }
-        }
-    }
-*/
+    
+    /// <summary>
+    /// Replaces the coordinate in mapMask with the coordinate in the map and updates hidden spaces
+    /// </summary>
     public bool Reveal((int, int) fCoord)
     {
         int listPosition = (_mapSize + 1) * fCoord.Item2 + fCoord.Item1;
@@ -247,6 +238,11 @@ public class Map
         return false; // False is not blown up
     }
 
+    /// <summary>
+    /// Replaces a coordinate on the mapMask with a symbol
+    /// </summary>
+    /// <param name="coord">a (x, y) coordinate pair</param>
+    /// <param name="symbol">a string symbol like " b "</param>
     public void Replace((int, int) coord, string symbol)
     {
         int listPosition = (_mapSize + 1) * coord.Item2 + coord.Item1;
@@ -257,6 +253,10 @@ public class Map
             mapMask[listPosition] = symbol;
     }
 
+    /// <summary>
+    /// Checks the count of _hiddenSpaces
+    /// </summary>
+    /// <returns>True if empty, false is not</returns>
     public bool CheckedHiddenEmpty()
     {
         if (_hiddenSpaces.Count == 0)
@@ -265,6 +265,9 @@ public class Map
             return false;
     }
 
+    /// <summary>
+    /// Sets the _hiddenSpaces to nothing
+    /// </summary>
     public void SetHiddenEmpty()
     {
         _hiddenSpaces = new List<(int, int)>();
