@@ -15,7 +15,6 @@ internal static class GenMap
         int xAxis = 0;
         foreach (string s in map)
         {
-            string s = displayString.Item2;
             if (s == "\n") { }
             else if (s.ToArray()[1] == '1')
                 Console.ForegroundColor = ConsoleColor.Blue;
@@ -39,7 +38,6 @@ internal static class GenMap
                 //Console.BackgroundColor = ConsoleColor.DarkGray;
             }
             xAxis++;
-
             if (s == "\n")
             {
                 Console.Write($" {yAxis} ");
@@ -47,16 +45,7 @@ internal static class GenMap
                 xAxis = 0;
             }
 
-            if (displayString.Item1)
-            {
-                Console.Write(s);
-            }
-            else
-            {
-                Console.ResetColor();
-                Console.Write(" # ");
-                Console.Write(s);
-            }
+            Console.Write(s); 
 
             Console.ResetColor();
         }
